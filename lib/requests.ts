@@ -25,8 +25,6 @@ export const forms: Record<
       { name: "company", label: "사업자명", type: "text", required: true, autoComplete: "organization" },
       { name: "contactName", label: "담당자명", type: "text", required: true, autoComplete: "name" },
       { name: "email", label: "이메일", type: "email", required: true, autoComplete: "email" },
-      { name: "postingUrl", label: "공고 URL", type: "url", hint: "URL이나 원문 중 하나는 꼭 적어 주세요." },
-      { name: "postingText", label: "공고 원문", type: "textarea" },
       { name: "postingCount", label: "월 평균 공고 건수", type: "number" },
       { name: "message", label: "문의 내용", type: "textarea" },
     ],
@@ -104,12 +102,5 @@ export function schemaFor(kind: RequestKind) {
     shape[f.name] = f.required ? s : z.union([s, z.literal("")]).optional();
   }
   shape.consents = z.array(z.literal(true)).length(forms[kind].consents.length);
-  let schema: z.ZodType = z.object(shape);
-  if (kind === "verify") {
-    schema = (schema as z.ZodObject).refine(
-      (v: Record<string, unknown>) => Boolean(v.postingUrl) || Boolean(v.postingText),
-      { message: "공고 URL이나 원문 중 하나는 꼭 적어 주세요." },
-    );
-  }
-  return schema;
+  return z.object(shape);
 }
