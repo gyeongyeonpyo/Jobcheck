@@ -1,0 +1,13 @@
+# Vercel에 올릴 파일 목록 (허용 목록 방식).
+# 웹사이트를 빌드하는 데 필요한 것만 올리고, 명세서·작업 기록·테스트·비밀정보는 올리지 않는다.
+/*
+!app
+!components
+!lib
+!public
+!package.json
+!package-lock.json
+!next.config.ts
+!postcss.config.mjs
+!tsconfig.json
+lib/**/*.test.ts
