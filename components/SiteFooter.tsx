@@ -14,7 +14,6 @@ const groups = [
   {
     title: "잡체크",
     links: [
-      { href: "/about", label: "팀과 협력 네트워크" },
       { href: "/contact", label: "기관·제휴 문의" },
       { href: "/terms", label: "이용약관" },
       { href: "/privacy", label: "개인정보처리방침" },

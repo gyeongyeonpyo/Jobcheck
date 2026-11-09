@@ -50,16 +50,3 @@ export default function StatusBadge({ status }: { status: CheckStatus }) {
     </span>
   );
 }
-
-export function PartnerBadge({ status }: { status: string }) {
-  const confirmed = status === "선정";
-  return (
-    <span
-      className={`inline-flex shrink-0 items-center self-start rounded-full px-2.5 py-1 text-[14px] font-semibold leading-none ${
-        confirmed ? "bg-ok-wash text-ok" : "bg-mist text-ink-soft ring-1 ring-line"
-      }`}
-    >
-      {status}
-    </span>
-  );
-}
