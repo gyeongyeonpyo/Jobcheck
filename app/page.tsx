@@ -1,23 +1,20 @@
-export const revalidate = 3600; // 로드맵 "진행 중" 표시를 시간 단위로 갱신
-
 import Link from "next/link";
 import Section from "@/components/Section";
 import Countdown from "@/components/Countdown";
 import ReportSpecimen from "@/components/ReportSpecimen";
 import { PartnerBadge } from "@/components/StatusBadge";
-import Roadmap from "@/components/Roadmap";
 import TeamList from "@/components/TeamList";
 import {
   audiences,
   checkItems,
-  comparisons,
+  features,
   hero,
   incubation,
   monitoringFacts,
   monitoringTiers,
   partners,
   penalties,
-  positioning,
+  precedent,
   precheckTargets,
   processSteps,
   reportCounts,
@@ -28,22 +25,24 @@ const primaryButton =
   "inline-flex items-center justify-center rounded-full bg-ink px-6 py-3.5 text-base font-semibold text-white transition-colors hover:bg-signal";
 const secondaryButton =
   "inline-flex items-center justify-center rounded-full px-6 py-3.5 text-base font-semibold text-ink ring-1 ring-line ring-inset transition-colors hover:bg-mist";
+const textLink = "font-semibold text-signal underline underline-offset-4";
 
 export default function Home() {
   const maxCount = Math.max(...reportCounts.map((r) => r.value));
 
   return (
     <>
-      {/* 1. 히어로 — 문장 하나 (명세 1장 확정 카피) */}
+      {/* 1. 히어로 — 첫 문장 다음 줄바꿈 (명세 1장 확정 카피) */}
       <section aria-labelledby="hero-title" className="px-4">
         {/* 모바일: 하단 고정 내비(약 80px)에 시행일 띠가 가리지 않도록 높이를 뺀다 */}
-        <div className="mx-auto flex min-h-[calc(100dvh-64px-58px-84px)] max-w-[760px] flex-col items-center justify-center py-16 text-center md:min-h-[calc(100dvh-80px-58px)] md:py-20">
-          <h1
-            id="hero-title"
-            className="text-balance text-[26px] leading-[1.45] tracking-[-0.015em] md:text-[38px] md:leading-[1.4]"
-          >
-            <span className="font-bold">{hero.lead}</span>{" "}
-            <span className="font-normal text-ink-soft">{hero.rest}</span>
+        <div className="mx-auto flex min-h-[calc(100dvh-64px-58px-84px)] max-w-[800px] flex-col items-center justify-center py-16 text-center md:min-h-[calc(100dvh-80px-58px)] md:py-20">
+          <h1 id="hero-title" className="tracking-[-0.015em]">
+            <span className="block text-balance text-[26px] font-bold leading-[1.4] md:text-[38px]">
+              {hero.lead}
+            </span>
+            <span className="mt-4 block text-balance text-[19px] font-normal leading-[1.6] text-ink-soft md:mt-5 md:text-[24px]">
+              {hero.rest}
+            </span>
           </h1>
           <div className="mt-12 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center">
             <Link href="/verify" className={primaryButton}>
@@ -55,8 +54,8 @@ export default function Home() {
           </div>
           <p className="mt-8 text-[15px] text-ink-soft">
             구직자이신가요?{" "}
-            <Link href="/check" className="font-semibold text-signal underline underline-offset-4">
-              공고 무료 확인
+            <Link href="/check" className={textLink}>
+              구인공고 안전한지 무료로 확인하기
             </Link>
           </p>
         </div>
@@ -89,7 +88,7 @@ export default function Home() {
             ))}
           </dl>
           <p className="mt-4 text-[14px] text-ink-soft">
-            {reportCountsSource}. 2026년은 상반기(6개월) 집계입니다. 피해는 청년 구직자에게 집중됩니다.
+            {reportCountsSource}. 2026년은 상반기(6개월) 집계입니다.
           </p>
         </figure>
 
@@ -125,12 +124,17 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* 4. 정부 체계 속 잡체크의 위치 */}
+      {/* 4. 정부 체계 속 잡체크의 위치 — 두 문장 사이 줄바꿈 */}
       <Section
         id="position"
         label="정부 체계 속 위치"
         tone="mist"
-        title="정부 모니터링 체계에서 1차 점검은 각 사업자의 몫입니다. 잡체크가 이 단계를 대행합니다."
+        title={
+          <>
+            <span className="block">정부 모니터링 체계에서 1차 점검은 각 사업자의 몫입니다.</span>
+            <span className="block">잡체크가 이 단계를 대행합니다.</span>
+          </>
+        }
       >
         <ol className="relative space-y-3" aria-label="구인광고 모니터링 단계">
           {monitoringTiers.map((t) => (
@@ -155,10 +159,28 @@ export default function Home() {
         </ul>
       </Section>
 
-      {/* 5. 어떻게 검증하나요 */}
+      {/* 5. 잡체크가 하는 일 (기능 소개) */}
+      <Section id="features" label="잡체크가 하는 일" title="검증부터 기록 보관까지, 1차 점검에 필요한 일을 맡습니다.">
+        <ul className="grid gap-x-10 md:grid-cols-2">
+          {features.map((f) => (
+            <li key={f.title} className="flex flex-col border-t border-line py-6">
+              <h3 className="text-lg font-bold">{f.title}</h3>
+              <p className="mt-2 flex-1 text-[16px] leading-relaxed text-ink-soft">{f.body}</p>
+              {f.href ? (
+                <Link href={f.href} className={`mt-4 self-start text-[15px] ${textLink}`}>
+                  {f.cta}
+                </Link>
+              ) : null}
+            </li>
+          ))}
+        </ul>
+      </Section>
+
+      {/* 6. 어떻게 검증하나요 */}
       <Section
         id="how"
         label="어떻게 검증하나요"
+        tone="mist"
         title="AI 분류, 공공데이터 대조, 사람 검토를 거쳐 확인 기록을 남깁니다."
       >
         <ol className="space-y-6">
@@ -166,7 +188,7 @@ export default function Home() {
             <li key={s.title} className="grid grid-cols-[40px_1fr] gap-4">
               <span
                 aria-hidden="true"
-                className="tnum grid size-10 place-items-center rounded-full bg-mist font-bold text-ink"
+                className="tnum grid size-10 place-items-center rounded-full bg-paper font-bold text-ink ring-1 ring-line"
               >
                 {i + 1}
               </span>
@@ -214,7 +236,59 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* 6. 누구를 위한 서비스인가 — 사업자 카드가 주인공 */}
+      {/* 7. 왜 검증 기록인가 — 판례 근거 (명세 2-5) */}
+      <Section
+        id="record"
+        label="왜 검증 기록인가"
+        title={
+          <>
+            <span className="block">게재할 때 무엇을 확인했는지 남겨 두면,</span>
+            <span className="block">나중에 사업자를 지키는 근거가 됩니다.</span>
+          </>
+        }
+      >
+        <figure className="border-l-4 border-signal bg-signal-wash px-5 py-5 md:px-7 md:py-6">
+          <blockquote className="text-[17px] font-medium leading-relaxed md:text-[19px]">
+            법원은 {precedent.gist}
+          </blockquote>
+          <figcaption className="mt-3 text-[15px] text-ink-soft">
+            {precedent.court} {precedent.caseNo} 판결
+          </figcaption>
+        </figure>
+
+        <div className="mt-8 space-y-4 leading-relaxed">
+          <p>
+            개정 직업안정법에서는 위반이 쌓일수록 처분이 무거워집니다. 1차 경고, 2차 사업정지 1개월,
+            3차 사업정지 3개월입니다.
+          </p>
+          <p>
+            판례가 보듯, 중요한 것은 <strong className="font-semibold">게재하는 시점에 확인했느냐</strong>
+            입니다. 확인을 했더라도 언제, 무엇을 근거로 확인했는지 보여 줄 기록이 없으면 그 사실을
+            설명하기 어렵습니다.
+          </p>
+          <p>잡체크는 공고마다 확인 과정을 기록으로 남기고 보관합니다.</p>
+        </div>
+
+        <ul className="mt-6 grid gap-3 sm:grid-cols-3">
+          {[
+            ["확인한 항목", "구인자 실재, 임금 수준, 표현, 법정 기준, 구인자 이력"],
+            ["대조한 근거 자료", "국세청 사업자 상태, 직종별 임금 통계, 명단공개 자료 등"],
+            ["확인 시점과 방법", "언제 확인했는지, AI 분류와 사람 검토 중 어떻게 확인했는지"],
+          ].map(([k, v]) => (
+            <li key={k} className="rounded-small bg-mist p-4">
+              <p className="font-bold">{k}</p>
+              <p className="mt-1 text-[15px] leading-relaxed text-ink-soft">{v}</p>
+            </li>
+          ))}
+        </ul>
+
+        <p className="mt-6 text-[14px] text-ink-soft">
+          개별 사안의 판단은 사실관계에 따라 달라질 수 있습니다. 잡체크 리포트는 확인사항과 근거를
+          제공하며, 위법 여부를 판정하지 않습니다.
+        </p>
+      </Section>
+
+      {/* 8. 누구를 위한 서비스인가 — 사업자 카드가 주인공 */}
       <Section id="who" label="누구를 위한 서비스인가" tone="mist">
         <article className="rounded-card bg-paper p-6 shadow-soft ring-1 ring-line md:p-10">
           <h3 className="text-[24px] font-bold leading-snug md:text-[30px]">{audiences.primary.who}</h3>
@@ -237,10 +311,7 @@ export default function Home() {
             <li key={a.who} className="flex flex-col rounded-card bg-paper p-5 ring-1 ring-line">
               <h3 className="font-bold leading-snug">{a.who}</h3>
               <p className="mt-2 flex-1 text-[15px] text-ink-soft">{a.give}</p>
-              <Link
-                href={a.href}
-                className="mt-4 text-[15px] font-semibold text-signal underline underline-offset-4"
-              >
+              <Link href={a.href} className={`mt-4 text-[15px] ${textLink}`}>
                 {a.cta}
               </Link>
             </li>
@@ -248,42 +319,7 @@ export default function Home() {
         </ul>
       </Section>
 
-      {/* 7. 차별점 */}
-      <Section id="compare" label="다른 방법과 비교" title={positioning}>
-        <div className="hidden md:block">
-          <table className="w-full text-left text-[15px]">
-            <thead>
-              <tr className="border-b-2 border-ink">
-                <th scope="col" className="w-[26%] py-2.5 pr-4 font-semibold">대안</th>
-                <th scope="col" className="py-2.5 pr-4 font-semibold">중소 사업자 입장의 한계</th>
-                <th scope="col" className="bg-signal-wash px-4 py-2.5 font-semibold">잡체크</th>
-              </tr>
-            </thead>
-            <tbody>
-              {comparisons.map((c) => (
-                <tr key={c.option} className="border-b border-line align-top">
-                  <th scope="row" className="py-3.5 pr-4 font-semibold">{c.option}</th>
-                  <td className="py-3.5 pr-4 text-ink-soft">{c.limit}</td>
-                  <td className="bg-signal-wash px-4 py-3.5 font-medium">{c.ours}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <ul className="space-y-3 md:hidden">
-          {comparisons.map((c) => (
-            <li key={c.option} className="rounded-card p-5 ring-1 ring-line">
-              <p className="font-bold">{c.option}</p>
-              <p className="mt-2 text-[15px] text-ink-soft">한계: {c.limit}</p>
-              <p className="mt-2 rounded-small bg-signal-wash px-3 py-2 text-[15px] font-medium">
-                잡체크: {c.ours}
-              </p>
-            </li>
-          ))}
-        </ul>
-      </Section>
-
-      {/* 8. 무료 가이드 */}
+      {/* 9. 무료 가이드 */}
       <section aria-labelledby="guide-title" className="bg-ink text-white">
         <div className="mx-auto grid max-w-[1280px] gap-8 px-4 py-16 md:grid-cols-[280px_1fr] md:gap-10 md:px-8 md:py-20">
           <div aria-hidden="true" className="hidden md:block">
@@ -311,7 +347,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 9. 팀 & 협력 네트워크 */}
+      {/* 10. 팀 & 협력 네트워크 (이름 비공개, 확정된 협력처만) */}
       <Section id="team" label="팀과 협력 네트워크">
         <TeamList compact />
         <h3 className="mt-14 font-bold">협력 네트워크</h3>
@@ -330,11 +366,6 @@ export default function Home() {
           ))}
         </ul>
         <p className="mt-4 text-[15px] text-ink-soft">{incubation}</p>
-      </Section>
-
-      {/* 10. 로드맵 */}
-      <Section id="roadmap" label="로드맵" tone="mist">
-        <Roadmap />
       </Section>
     </>
   );

@@ -47,7 +47,7 @@ export default function SiteHeader() {
             href="/check"
             className="rounded-full px-3 py-2 text-[15px] font-medium text-ink-soft hover:text-ink"
           >
-            공고 무료 확인
+            공고 안전한지 확인
           </Link>
         </div>
       </header>

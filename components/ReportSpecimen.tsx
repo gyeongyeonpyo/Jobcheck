@@ -102,7 +102,8 @@ export default function ReportSpecimen() {
         ))}
       </ol>
 
-      <p className="mt-4 pr-[104px] text-[14px] text-ink-soft md:pr-[128px]">
+      {/* 도장 높이만큼 자리를 잡아, 도장이 위 항목(배지)에 겹치지 않게 한다 */}
+      <p className="mt-4 flex min-h-[88px] items-center pr-[104px] text-[14px] text-ink-soft md:min-h-[100px] md:pr-[128px]">
         잡체크 리포트는 공고의 확인사항과 근거를 제공하며, 위법 여부를 판정하지 않습니다.
       </p>
 

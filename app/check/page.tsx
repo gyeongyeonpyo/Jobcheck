@@ -3,8 +3,8 @@ import CheckClient from "./CheckClient";
 import { llmConfigured } from "@/lib/check/llm.ts";
 
 export const metadata: Metadata = {
-  title: "이 공고 안전한가? 무료 공고 확인",
-  description: "청년 구직자를 위한 무료 구인광고 확인. 확인 항목과 근거를 보여 드립니다.",
+  title: "이 공고 안전한가? 구인공고 무료 확인",
+  description: "지원하기 전에 구인공고가 안전한지 무료로 확인하세요. 확인 항목과 근거를 보여 드립니다.",
 };
 
 export const dynamic = "force-dynamic";

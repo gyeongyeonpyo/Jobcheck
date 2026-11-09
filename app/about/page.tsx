@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
 import PageShell from "@/components/PageShell";
 import TeamList from "@/components/TeamList";
-import Roadmap from "@/components/Roadmap";
 import { PartnerBadge } from "@/components/StatusBadge";
 import { incubation, partners } from "@/lib/content";
 
 export const metadata: Metadata = { title: "팀과 협력 네트워크" };
-export const revalidate = 3600;
 
 export default function AboutPage() {
   return (
@@ -32,11 +30,6 @@ export default function AboutPage() {
         ))}
       </ul>
       <p className="mt-4 text-[15px] text-ink-soft">{incubation}</p>
-
-      <h2 className="mt-16 text-[22px] font-bold">로드맵</h2>
-      <div className="mt-6">
-        <Roadmap />
-      </div>
     </PageShell>
   );
 }

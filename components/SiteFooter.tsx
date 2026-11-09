@@ -6,7 +6,7 @@ const groups = [
     title: "서비스",
     links: [
       { href: "/verify", label: "구인광고 사전검증" },
-      { href: "/check", label: "공고 무료 확인" },
+      { href: "/check", label: "구인공고 안전한지 확인 (무료)" },
       { href: "/match", label: "직업소개 Match (오픈 예정)" },
       { href: "/guide", label: "시행 대응 가이드" },
     ],
