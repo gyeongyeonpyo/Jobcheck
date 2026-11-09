@@ -2,6 +2,32 @@
 
 import { useState } from "react";
 import { forms, type RequestKind } from "@/lib/requests";
+import { CONTACT_EMAIL } from "@/lib/content";
+
+// 메일 앱 주소창 길이 제한을 넘지 않도록 긴 입력은 줄인다
+const MAX_FIELD_IN_MAIL = 1200;
+
+function buildMailto(kind: RequestKind, values: Record<string, string>): { href: string; truncated: boolean } {
+  const def = forms[kind];
+  let truncated = false;
+  const lines = def.fields
+    .filter((f) => values[f.name])
+    .map((f) => {
+      let v = values[f.name];
+      if (v.length > MAX_FIELD_IN_MAIL) {
+        v = `${v.slice(0, MAX_FIELD_IN_MAIL)} …(이하 생략, 메일에 이어서 붙여 주세요)`;
+        truncated = true;
+      }
+      return `${f.label}: ${v}`;
+    });
+  const who = values.company || values.org || values.email || "";
+  const subject = `[잡체크] ${def.title}${who ? ` - ${who}` : ""}`;
+  const body = [...lines, "", "위 내용으로 신청합니다. (필수 동의 항목에 동의함)"].join("\n");
+  return {
+    href: `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
+    truncated,
+  };
+}
 
 const inputClass =
   "w-full rounded-small border border-line bg-paper px-4 py-3 text-base outline-none focus:border-signal";
@@ -11,14 +37,17 @@ export default function RequestForm({ kind }: { kind: RequestKind }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState<{ receipt: string; message: string } | null>(null);
+  const [mailFallback, setMailFallback] = useState<{ href: string; truncated: boolean } | null>(null);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setBusy(true);
     setError(null);
+    setMailFallback(null);
     const fd = new FormData(e.currentTarget);
     const body: Record<string, unknown> = {};
-    for (const f of def.fields) body[f.name] = String(fd.get(f.name) ?? "").trim();
+    const values: Record<string, string> = {};
+    for (const f of def.fields) body[f.name] = values[f.name] = String(fd.get(f.name) ?? "").trim();
     body.consents = def.consents.map((_, i) => fd.get(`consent-${i}`) === "on");
     try {
       const res = await fetch(`/api/requests/${kind}`, {
@@ -28,9 +57,10 @@ export default function RequestForm({ kind }: { kind: RequestKind }) {
       });
       const data = (await res.json().catch(() => null)) as
         | { ok: true; receipt: string; message: string }
-        | { ok: false; message: string }
+        | { ok: false; code?: string; message: string }
         | null;
       if (!data) setError("응답을 읽지 못했습니다. 잠시 뒤 다시 시도해 주세요.");
+      else if (!data.ok && data.code === "not_configured") setMailFallback(buildMailto(kind, values));
       else if (!data.ok) setError(data.message);
       else setDone({ receipt: data.receipt, message: data.message });
     } catch {
@@ -98,6 +128,27 @@ export default function RequestForm({ kind }: { kind: RequestKind }) {
           </label>
         ))}
       </fieldset>
+
+      {mailFallback ? (
+        <div role="status" className="rounded-small bg-signal-wash p-4 text-[15px] leading-relaxed md:p-5">
+          <p className="font-semibold">지금은 온라인 접수 대신 이메일로 받고 있습니다.</p>
+          <p className="mt-1">
+            아래 버튼을 누르면 입력하신 내용이 담긴 메일 작성 창이 열립니다. 보내기를 눌러야 접수됩니다.
+          </p>
+          {mailFallback.truncated ? (
+            <p className="mt-1 text-caution">긴 내용은 일부만 담겼습니다. 메일에 나머지를 이어서 붙여 주세요.</p>
+          ) : null}
+          <a
+            href={mailFallback.href}
+            className="mt-4 inline-flex items-center justify-center rounded-full bg-ink px-5 py-3 font-semibold text-white hover:bg-signal"
+          >
+            메일로 보내기
+          </a>
+          <p className="mt-3 text-[14px] text-ink-soft">
+            메일 창이 열리지 않으면 {CONTACT_EMAIL} 로 직접 보내 주세요.
+          </p>
+        </div>
+      ) : null}
 
       {error ? (
         <p role="alert" className="rounded-small bg-caution-wash px-4 py-3 font-medium text-caution">

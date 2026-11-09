@@ -51,12 +51,10 @@ export async function POST(req: Request, ctx: { params: Promise<{ kind: string }
   const receipt = receiptNumber(k);
   const delivered = await deliver(k, receipt, parsed.data);
   if (!delivered) {
-    // 저장소가 연결되지 않았으면 접수했다고 말하지 않는다
+    // 저장소가 연결되지 않았으면 접수했다고 말하지 않는다.
+    // 입력값은 검증을 통과했으므로, 화면에서 이메일로 보내도록 안내한다.
     return NextResponse.json(
-      {
-        ok: false,
-        message: "온라인 접수를 준비하고 있습니다. 베타 오픈 후 다시 이용해 주세요.",
-      },
+      { ok: false, code: "not_configured", message: "온라인 접수를 준비하고 있어 이메일로 받고 있습니다." },
       { status: 503 },
     );
   }

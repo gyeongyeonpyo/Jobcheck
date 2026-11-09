@@ -19,7 +19,7 @@ npm run build      # 프로덕션 빌드
 |---|---|---|
 | `ANTHROPIC_API_KEY` | `/check` 공고 확인의 AI 분류 (Claude API, `claude-opus-5-5`) | `/check`가 "오픈 예정" 안내로 바뀜 |
 | `NTS_SERVICE_KEY` | 국세청 사업자 상태 조회 (공공데이터포털) | 구인자 실재 항목이 "확인 불가" |
-| `SUBMISSIONS_WEBHOOK_URL` | 검증 의뢰·가이드·Match·문의 폼 접수 전달 (Slack, Make 등) | 폼이 "온라인 접수 준비 중"으로 응답 (접수했다고 말하지 않음) |
+| `SUBMISSIONS_WEBHOOK_URL` | 검증 의뢰·가이드·Match·문의 폼 접수 전달 (Slack, Make 등) | 입력 내용이 담긴 메일 작성 창으로 안내 (받는 주소: `lib/content.ts`의 `CONTACT_EMAIL`) |
 
 ## 구조
 

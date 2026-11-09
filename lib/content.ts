@@ -1,6 +1,9 @@
 // 사이트 문구와 데이터. 모든 사실·수치는 CLAUDE.md(명세서)에서 가져온다.
 // 명세서에 없는 수치·실적·후기를 여기에 추가하지 않는다 (명세 0-1, 0-2).
 
+// 문의 이메일 (임시). 도메인 메일이 생기면 여기만 바꾼다 (명세 14).
+export const CONTACT_EMAIL = "gypyoo@gmail.com";
+
 export const ENFORCEMENT_DATE = "2026-12-10"; // 개정 직업안정법 시행일 (명세 2-2)
 
 export const hero = {

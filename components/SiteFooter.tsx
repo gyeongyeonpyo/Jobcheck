@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { notices } from "@/lib/content";
+import { CONTACT_EMAIL, notices } from "@/lib/content";
 
 const groups = [
   {
@@ -58,8 +58,12 @@ export default function SiteFooter() {
       </div>
       <div className="border-t border-white/15">
         <div className="mx-auto flex max-w-[1280px] flex-wrap gap-x-8 gap-y-1 px-4 py-6 text-sm text-white/60 md:px-8">
-          {/* TODO: 공식 문의 이메일·도메인 확정 후 표기 (명세 14) */}
-          <p>문의 이메일 [작성 예정]</p>
+          <p>
+            문의{" "}
+            <a href={`mailto:${CONTACT_EMAIL}`} className="text-white/80 underline underline-offset-4 hover:text-white">
+              {CONTACT_EMAIL}
+            </a>
+          </p>
           <p>예비창업 단계, 2027년 4월 법인설립 예정</p>
         </div>
       </div>
