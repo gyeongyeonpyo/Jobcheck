@@ -13,6 +13,25 @@ npm test           # 공고 확인 백엔드 단위 테스트
 npm run build      # 프로덕션 빌드
 ```
 
+## 배포 (Vercel)
+
+- 공개 주소: https://jobcheck-navy.vercel.app
+- Vercel 팀 `pyogyeongyeon`, 프로젝트 `jobcheck` (Hobby 플랜)
+- 연결 정보: `.vercel/project.json` (프로젝트·팀 ID만 있음, 비밀정보 아님). 이 파일이 있으면 이 폴더에서 배포할 때 항상 같은 프로젝트로 올라간다.
+- 설정: `vercel.json`(프레임워크 Next.js 고정), `package.json`의 `engines.node`(Node 22)
+- 올라가는 파일: `.vercelignore`의 허용 목록만 (`app`, `components`, `lib`, `public`, 빌드 설정). 명세서·디자인 문서·테스트·`.env*`는 올라가지 않는다.
+
+수정한 뒤 같은 주소로 다시 배포하기:
+
+```bash
+npm i -g vercel        # Vercel CLI가 없을 때만
+vercel login           # 로그인이 안 돼 있을 때만, 브라우저에서 승인
+vercel deploy --prod   # 이 폴더(저장소 루트)에서 실행
+```
+
+`vercel link`를 다시 실행하거나 다른 폴더에서 배포하면 새 프로젝트가 생길 수 있으니, 이 저장소 루트에서 위 명령만 쓴다.
+`vercel link`가 만드는 `.env.local`에는 임시 토큰이 들어 있으므로 커밋하지 않는다 (`.gitignore`에서 제외됨).
+
 ## 환경변수 (서버 전용, Vercel 환경변수에 등록)
 
 | 이름 | 용도 | 없을 때 |

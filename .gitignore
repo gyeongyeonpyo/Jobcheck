@@ -10,3 +10,7 @@ next-env.d.ts
 # Vercel CLI 로그인·로컬 캐시 (project.json은 아래에서 예외로 커밋)
 .vercel/*
 !.vercel/project.json
+
+# 비밀정보 (vercel link가 만드는 .env.local 토큰 포함). 예시 파일만 커밋한다.
+.env*
+!.env.example

@@ -10,4 +10,5 @@
 !next.config.ts
 !postcss.config.mjs
 !tsconfig.json
+!vercel.json
 lib/**/*.test.ts
